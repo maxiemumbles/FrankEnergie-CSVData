@@ -9,7 +9,7 @@ public class Main {
     static void main() {
         CSVWriter csvWriter = new CSVWriter();
         APIHandler apiHandler = new APIHandler();
-        HttpResponse<String> rawResponse = apiHandler.getAPIResponse();
+        HttpResponse<String> rawResponse = apiHandler.getAPIResponse("2026-03-25"); // DATE FORMATTED IN "YYYY-MM-DD"
 
         GraphQLResponse response;
         try {

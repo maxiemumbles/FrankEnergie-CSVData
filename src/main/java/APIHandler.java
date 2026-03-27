@@ -14,14 +14,14 @@ public class APIHandler {
         return objectMapper.readValue(jsonResponse, GraphQLResponse.class);
     }
 
-    public HttpResponse<String> getAPIResponse() {
+    public HttpResponse<String> getAPIResponse(String date) {
         try {
             HttpClient client = HttpClient.newBuilder()
                     .version(HttpClient.Version.HTTP_1_1)
                     .followRedirects(HttpClient.Redirect.ALWAYS)
                     .build();
 
-            String jsonBody = "{"
+            String jsonBody = String.format("{"
                     + "\"query\": \"query MarketPrices($date: String!, $resolution: PriceResolution!) {\\n"
                     + "  marketPrices(date: $date, resolution: $resolution) {\\n"
                     + "    averageElectricityPrices {\\n"
@@ -66,11 +66,11 @@ public class APIHandler {
                     + "  }\\n"
                     + "}\\n\","
                     + "\"variables\": {"
-                    + "\"date\": \"2026-03-25\","
+                    + "\"date\": \"%s\","
                     + "\"resolution\": \"PT60M\""
                     + "},"
                     + "\"operationName\": \"MarketPrices\""
-                    + "}";
+                    + "}", date);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(Main.URL))
