@@ -10,8 +10,8 @@ public class CSVWriter {
                 .collect(Collectors.joining(","));
     }
 
-    public void writeToCSV(List<String[]> data) throws IOException {
-        File csvFile = new File(Main.CSV_FILE_NAME);
+    public void writeToCSV(List<String[]> data, String fileName) throws IOException {
+        File csvFile = new File(fileName);
         try (PrintWriter pw = new PrintWriter(csvFile)) {
             data.stream()
                     .map(this::convertToCSV)
