@@ -6,7 +6,6 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     static String url = "https://www.frankenergie.nl/graphql";
@@ -33,12 +32,6 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        // Access properties directly
-        assert response != null;
-        response.getData().getMarketPrices().getElectricityPrices().forEach(price -> {
-            System.out.println("Price: " + price.getMarketPrice());
-        });
     }
 
     public static GraphQLResponse readJsonIntoObject(String jsonResponse) throws Exception {
@@ -49,13 +42,11 @@ public class Main {
 
     public static HttpResponse<String> getAPIResponse() {
         try {
-            // Create HttpClient
             HttpClient client = HttpClient.newBuilder()
                     .version(HttpClient.Version.HTTP_1_1)
                     .followRedirects(HttpClient.Redirect.ALWAYS)
                     .build();
 
-            // Create the GraphQL query body
             String jsonBody = "{"
                     + "\"query\": \"query MarketPrices($date: String!, $resolution: PriceResolution!) {\\n"
                     + "  marketPrices(date: $date, resolution: $resolution) {\\n"
@@ -107,7 +98,6 @@ public class Main {
                     + "\"operationName\": \"MarketPrices\""
                     + "}";
 
-            // Create HttpRequest
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .header("Content-Type", "application/json")
@@ -115,7 +105,6 @@ public class Main {
                     .timeout(Duration.ofSeconds(30))
                     .build();
 
-            // Send the request
             return client.send(request, HttpResponse.BodyHandlers.ofString());
 
         } catch (Exception e) {
